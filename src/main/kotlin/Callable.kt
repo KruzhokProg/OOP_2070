@@ -1,18 +1,22 @@
 package org.example
 
-abstract class Callable {
-    abstract fun call()
+interface Callable {
+    fun call()
 }
 
-abstract class CallableAndBrowsable: Callable() {
-    abstract fun browse()
+interface Receivable: Callable {
+    fun receive()
 }
 
-abstract class CallableAndBrowsableAndReceivable: CallableAndBrowsable() {
-    abstract fun receive()
+interface Browsable {
+    fun browse()
 }
 
-class Phone: CallableAndBrowsable() {
+class Phone: Receivable, Browsable {
+    override fun receive() {
+        println("Телефон получает звонки")
+    }
+
     override fun call() {
         println("Телефон звонит")
     }
@@ -22,7 +26,11 @@ class Phone: CallableAndBrowsable() {
     }
 }
 
-class Tablet: CallableAndBrowsable() {
+class Tablet: Receivable, Browsable {
+    override fun receive() {
+        println("Планшет принимает звонки")
+    }
+
     override fun call() {
         println("Планшет звонит")
     }
@@ -32,7 +40,7 @@ class Tablet: CallableAndBrowsable() {
     }
 }
 
-class SmartWatch: CallableAndBrowsable() {
+class SmartWatch: Callable, Browsable {
     override fun call() {
         println("Умные часы звонят")
     }
@@ -42,7 +50,11 @@ class SmartWatch: CallableAndBrowsable() {
     }
 }
 
-class Fridge: Callable() {
+class Fridge: Receivable {
+    override fun receive() {
+        println("Холодильник принимает звонки")
+    }
+
     override fun call() {
         println("Холодильник звонит")
     }
@@ -56,5 +68,5 @@ fun main() {
 //    phone.call()
 //    tablet.call()
 //    smartWath.call()
-    listOf(phone, tablet, smartWath, fridge).forEach { it.call() }
+    listOf(phone, tablet, fridge).forEach { it.receive() }
 }

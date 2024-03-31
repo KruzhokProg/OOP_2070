@@ -12,7 +12,6 @@ fun main() {
 //    val tea = Tea()
 //    tea.prepareBeverage()
     val boeing737 = Boeing737()
-
     for (i in (1..10)) {
         val newPassenger = Passenger(
             name = "name_$i",
