@@ -3,6 +3,7 @@ package org.example
 abstract class Transport {
     abstract val capacity: Int
     abstract fun move()
+    abstract fun getSeatSheme()
 }
 
 class CargoTrain: Transport() {
@@ -12,6 +13,8 @@ class CargoTrain: Transport() {
     override fun move() {
         println("Поезд доставляет груз")
     }
+
+    override fun getSeatSheme() {}
 }
 
 abstract class Aircraft: Transport() {
@@ -19,6 +22,7 @@ abstract class Aircraft: Transport() {
     abstract val engineCount: Int
     abstract val altitude: Int
 
+    abstract val numberOfPasses: Int
     abstract val rows: Int
     abstract val seatsInRow: Int
 
@@ -44,26 +48,10 @@ abstract class Aircraft: Transport() {
         println("Летит")
     }
 
-    abstract fun getSeatSheme()
-}
-
-class Boeing737: Aircraft(){
-    override val model: String
-        get() = "Boeing"
-    override val engineCount: Int
-        get() = 2
-    override val altitude: Int
-        get() = 12500
-    override val rows: Int
-        get() = 10
-    override val seatsInRow: Int
-        get() = 6
+    override val capacity: Int
+        get() = rows * seatsInRow
 
     override fun getSeatSheme() {
-        // ABC DEF
-        //1 _X_ XX_
-        //2 __X ___
-        //3 ___ XXX
         println(" ABC DEF")
         seatScheme.forEachIndexed { row, seats ->
             print("${row + 1} ")
@@ -73,21 +61,34 @@ class Boeing737: Aircraft(){
                 } else {
                     print("X")
                 }
-                if (index == (seats.size-1) / 2) {
+                if ((index + 1) % ((seats.size) / (numberOfPasses+1)) == 0) {
                     print(" ")
                 }
             }
             println()
         }
     }
+}
+
+class Boeing737: Aircraft(){
+    override val model: String
+        get() = "Boeing"
+    override val engineCount: Int
+        get() = 2
+    override val altitude: Int
+        get() = 12500
+    override val numberOfPasses: Int
+        get() = 3
+    override val rows: Int
+        get() = 10
+    override val seatsInRow: Int
+        get() = 12
+
 // ДЗ:
 //  AB CD EF
 //1 _X _X X_
 //2 __ X_ __
 //3 __ _X XX
-    override val capacity: Int
-        get() = rows * seatsInRow
-
 
 }
 
