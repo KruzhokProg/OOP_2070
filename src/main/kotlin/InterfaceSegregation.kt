@@ -5,30 +5,57 @@ fun main() {
     val e = E.Impl()
     val f = F.Impl()
     val g = G.Impl()
-    val dataSource = MutableDataSource.Impl(d, e, f, g)
-    dataSource.save()
-    dataSource.fetch()
+    val saveDataSource: DataSource.Save = DataSource.Save.Impl(d, e, f)
+    saveDataSource.save()
+    val readDataSource: DataSource.Read = DataSource.Read.Impl(f, g)
+    readDataSource.read()
+    val mutableDataSource: DataSource.Mutable = DataSource.Mutable.Impl(saveDataSource, readDataSource)
 }
 
-interface MutableDataSource {
-    fun save()
-    fun fetch()
+interface DataSource {
 
-    class Impl(
-        private val d: D,
-        private val e: E,
-        private val f: F,
-        private val g: G
-    ): MutableDataSource {
-        override fun save() {
-            d.d()
-            e.e()
-            f.f()
+    interface Save {
+        fun save()
+
+        class Impl(
+            private val d: D,
+            private val e: E,
+            private val f: F,
+        ): Save {
+            override fun save() {
+                d.d()
+                e.e()
+                f.f()
+            }
         }
+    }
 
-        override fun fetch() {
-            f.f()
-            g.g()
+    interface Read {
+        fun read()
+
+        class Impl(
+            private val f: F,
+            private val g: G
+        ): Read {
+            override fun read() {
+                f.f()
+                g.g()
+            }
+        }
+    }
+
+    interface Mutable: Save, Read {
+        class Impl(
+            private val save: Save,
+            private val read: Read
+        ): Mutable {
+            override fun save() {
+                save.save()
+            }
+
+            override fun read() {
+                read.read()
+            }
         }
     }
 }
