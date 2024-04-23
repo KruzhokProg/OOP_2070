@@ -1,5 +1,7 @@
 package org.example
 
+import kotlin.math.abs
+
 interface Converter {
     fun convert(value: Double): Double
     fun convert(value: Int): Double
@@ -10,6 +12,8 @@ abstract class CurrencyConverter : Converter {
     abstract val currencyCode: String
     abstract val rate: Double
     override fun convert(value: Double): Double {
+        if (rate == 0.0 && value == 0.0) throw ArithmeticException("Деление на 0 на 0 неопределенно")
+        if (rate == 0.0) throw ArithmeticException("Деление на 0 запрещено")
         result = value / rate
         return result!!
     }
@@ -38,21 +42,57 @@ object EurConverter : CurrencyConverter() {
 
 object Converters {
     private val converterList = listOf<CurrencyConverter>(UsdCoverter, EurConverter)
-    fun get(currencyCode: String): CurrencyConverter {
-        return converterList.firstOrNull { it.currencyCode == currencyCode }
+    fun get(currencyCode: String): CurrencyConverter =
+        converterList.firstOrNull { it.currencyCode == currencyCode }
             ?: object : CurrencyConverter() {
                 override val currencyCode: String
                     get() = "Not found"
                 override val rate: Double
                     get() = 1.0
             }
+}
+
+interface Numbers {
+    fun difference(): Int
+    fun divide(): Double
+    fun sumInt(): Int
+    fun sumDouble(): Double
+}
+
+class NumbersImpl(
+    private val number1: Int,
+    private val number2: Int
+): Numbers {
+
+    private var n1: Int? = null
+    private var n2: Int? = null
+    override fun difference(): Int {
+        if (number1 * number2 < 0) {
+            n1 = abs(number1)
+            n2 = abs(number2)
+            sumInt()
+        }
+    }
+
+    override fun divide(): Double {
+        TODO("Not yet implemented")
+    }
+
+    override fun sumInt(): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun sumDouble(): Double {
+        TODO("Not yet implemented")
     }
 }
 
 fun main() {
     println(Converters.get("EUR").convert(200).toString())
     println(Converters.get("USD").convert(200).toString())
-    println (Converters.get("DJF").convert(200).toString())
+    println(Converters.get("DJF").convert(200).toString())
+    val numbers: Numbers = NumbersImpl(10, 20)
+    numbers.sumInt()
 //    val moneyInRub = readln().toInt()//    val usdConverter1 = UsdCoverter
 //    val usdConverter2 = UsdCoverter//    println(usdConverter1.toString())
 //    println(usdConverter2.toString())
