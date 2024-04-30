@@ -13,11 +13,11 @@ class NumbersImplTest {
         }
     }
 
-    @Test
-    fun `check isOverflow by sumLong`() {
-        val numbers = NumbersImpl(Int.MAX_VALUE, 1)
-        val actual = numbers.sumLong()
-        val expected = Int.MAX_VALUE.toLong() + 1
-        assertEquals(expected, actual)
-    }
+//    @Test
+//    fun `check isOverflow by sumLong`() {
+//        val numbers = NumbersImpl(Int.MAX_VALUE, 1)
+//        val actual = numbers.sumLong()
+//        val expected = Int.MAX_VALUE.toLong() + 1
+//        assertEquals(expected, actual)
+//    }
 }

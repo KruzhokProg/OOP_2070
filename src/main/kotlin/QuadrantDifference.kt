@@ -7,12 +7,9 @@ interface QuadrantDifference {
 
 class QuadrantDifferenceImpl(private val numbers: Numbers): QuadrantDifference {
     override fun value(): Long {
-        TODO("Not yet implemented")
+        return numbers.difference() * numbers.sumInt().toLong()
         // c try catch и (без!!!)
     }
 }
 
-fun main() {
-    QuadrantDifferenceImpl(NumbersImpl(Int.MAX_VALUE , 1)).value()
-}
 

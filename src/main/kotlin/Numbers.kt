@@ -5,7 +5,7 @@ interface Numbers {
     fun divide(): Double
     fun isOverflow(): Boolean
     fun sumInt(): Int
-    fun sumLong(): Long
+//    fun sumLong(): Long
 }
 
 class NumbersImpl(
@@ -44,7 +44,7 @@ class NumbersImpl(
         return number1 + number2
     }
 
-    override fun sumLong(): Long {
-        return number1.toLong() + number2
-    }
+//    override fun sumLong(): Long {
+//        return number1.toLong() + number2
+//    }
 }

@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("io.mockk:mockk:1.13.2")
 //    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
 }
 
