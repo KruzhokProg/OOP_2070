@@ -4,7 +4,6 @@ import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
 import org.example.android.*
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -26,8 +25,11 @@ class AppTest {
 
     @Test
     fun `Fetches data and throws exception`() {
+        // arrange
         every { repository.fetchData() } throws IllegalStateException()
+        //act
         app.showData()
+        //assert
         verify(exactly = 1) { view.onError(any()) }
         verify(exactly = 0) { view.onResult(any()) }
     }
@@ -43,6 +45,7 @@ class AppTest {
         app.showData()
         val captureSlot = slot<List<UIDataModel>>()
         verify(exactly = 1) { view.onResult(capture(captureSlot)) }
+
         captureSlot.captured.let {
             assert(it.isNotEmpty())
             assertEquals(uuid, it.first().uuid)
@@ -55,11 +58,21 @@ class AppTest {
     //ДЗ
     @Test
     fun `Fetches data when fetchData returns emptyList `() {
-
+        every { repository.fetchData() } returns emptyList()
+        app.showData()
+        val captureSlot = slot<List<UIDataModel>>()
+        verify(exactly = 1) { view.onResult(capture(captureSlot)) }
+        captureSlot.captured.let {
+            assert(it.isEmpty())
+            assertNotNull(it)
+        }
     }
 
     @Test
     fun `Log works`() {
-
+        val spiedApp = spyk(app)
+        every { repository.fetchData() } returns emptyList()
+        spiedApp.showData()
+        verify { spiedApp.log(any(), any()) }
     }
 }

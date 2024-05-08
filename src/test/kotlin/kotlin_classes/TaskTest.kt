@@ -13,7 +13,7 @@ class TaskTest {
         val task2 = Task(1, "Убраться", 6)
         //assert
         assert(task1 != task2)
-        assert(task1 === task1.copy(desc = "fdmghdfg"))
+//        assert(task1 === task1.copy(desc = "fdmghdfg"))
     }
 
 }

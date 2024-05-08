@@ -7,7 +7,6 @@ class App(
 ): AppInterface.Features{
     override fun showData() {
         log("showData")
-
         try {
             val result = repository.fetchData()
 
@@ -22,6 +21,7 @@ class App(
             )
 
         } catch (err: Throwable) {
+            log("error")
             view.onError(err)
         }
     }
