@@ -162,9 +162,22 @@ var attempts: Int = 0
         field = value
     }
 
-class LogginProperty<T>(var value: T) {
+//class LogginProperty<T>(var value: T) {
+//    operator fun getValue(thisRef: Any?, prop: KProperty<*>): T {
+//        println("${prop.name} getter returned $value")
+//        return value
+//    }
+//
+//    operator fun setValue(thisRef: Any?, prop: KProperty<*>, newValue: T) {
+//        println("${prop.name} changed from $value to $newValue")
+//        value = newValue
+//    }
+//}
+
+class LogginProperty<T>(var value: T, var call: (List<Any?>) -> Unit) {
     operator fun getValue(thisRef: Any?, prop: KProperty<*>): T {
-        println("${prop.name} getter returned $value")
+//        println("${prop.name} getter returned $value")
+        call.invoke(listOf(prop.name, value))
         return value
     }
 
@@ -175,10 +188,12 @@ class LogginProperty<T>(var value: T) {
 }
 
 fun main() {
-    var token: String? by LogginProperty(null)
-    var attempts: Int by LogginProperty(0)
-    token = "AAA"
+    var token: String? by LogginProperty(null, { list -> println("${list.first()} getter returned ${list.last()}") })
     val res = token
-    println(res)
-    attempts++
+//    var token: String? by LogginProperty(null)
+//    var attempts: Int by LogginProperty(0)
+//    token = "AAA"
+//    val res = token
+//    println(res)
+//    attempts++
 }

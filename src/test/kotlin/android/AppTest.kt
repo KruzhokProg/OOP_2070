@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+/**
+ * Тест на [App]
+ */
 class AppTest {
 
     @RelaxedMockK
