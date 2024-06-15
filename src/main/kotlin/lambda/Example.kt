@@ -16,7 +16,7 @@ fun doOperationWithoutLambda(x: Int, y: Int, operation: Function2<Int, Int, Int>
     println(operation.invoke(x, y))
 }
 
-interface SumOperation: Operation
+interface SumOperation : Operation
 
 interface Operation {
     fun invoke(x: Int, y: Int): Int
@@ -30,18 +30,18 @@ fun main2() {
     greeting.invoke()
     val greetingByName = { name: String -> println("Hello $name") }
 //    greetingByName("Peter")
-    val printSum = {x: Int, y: Int -> println(x+y) }
-    val sum = {x: Int, y: Int -> x+y }
+    val printSum = { x: Int, y: Int -> println(x + y) }
+    val sum = { x: Int, y: Int -> x + y }
     val sum2: CommonOperation? = null
     lateinit var sum3: CommonOperation
-    val sumWithLogging = {x: Int, y: Int ->
+    val sumWithLogging = { x: Int, y: Int ->
         val res = x + y
         println("$x + $y = $res")
         res
     }
     sumWithLogging(2, 3)
     doOperation(3, 4, sum)
-    doOperation(3, 4, op = {x: Int, y: Int -> x+y })
+    doOperation(3, 4, op = { x: Int, y: Int -> x + y })
 
     val sumOperation = object : Operation {
         override fun invoke(x: Int, y: Int): Int {
@@ -64,7 +64,6 @@ fun main2() {
     doOperationWithoutLambda(3, 4, multiplyOperation)
 
 
-
 }
 
 // ДЗ: написать конвертер
@@ -79,10 +78,10 @@ enum class Action {
 }
 
 fun selectAction(action: Action): (Int, Int) -> Int {
-    return when(action) {
-        Action.PLUS -> {x, y -> x + y}
-        Action.MINUS -> {x, y -> x - y}
-        Action.MULTIPLY -> {x, y -> x * y}
+    return when (action) {
+        Action.PLUS -> { x, y -> x + y }
+        Action.MINUS -> { x, y -> x - y }
+        Action.MULTIPLY -> { x, y -> x * y }
     }
 }
 
@@ -149,11 +148,11 @@ data class Person(val name: String, val age: Int)
 
 // filter
 
-fun main() {
-    val people = listOf(Person("Alice", 29), Person("Bob", 31), Person("Peter", 31))
-    println(people.filter { it.age > 30 })
-    println("hjagsdasd".myFilter { it > 'a' })
-}
+//fun main() {
+//    val people = listOf(Person("Alice", 29), Person("Bob", 31), Person("Peter", 31))
+//    println(people.filter { it.age > 30 })
+//    println("hjagsdasd".myFilter { it > 'a' })
+//}
 
 fun String.myFilter(predicate: (Char) -> Boolean): String {
     val sb = StringBuilder()
@@ -165,3 +164,127 @@ fun String.myFilter(predicate: (Char) -> Boolean): String {
 }
 // ДЗ: реализовать joinToString
 // попробовать сделать filter над Iterable
+
+// Встроенные функции
+
+class Book(val title: String, val authors: List<String>)
+
+fun alphabet(): String {
+    val result = StringBuilder()
+    for (letter in 'A'..'Z') {
+        result.append(letter)
+    }
+    result.append("\nAlphabet is ready")
+    return result.toString()
+}
+
+fun alphabe2(): String = with(StringBuilder()) {
+    for (letter in 'A'..'Z') {
+        append(letter)
+    }
+    append("\nAlphabet is ready")
+    toString()
+}
+
+fun alphabe3() = StringBuilder().apply {
+    for (letter in 'A'..'Z') {
+        append(letter)
+    }
+    append("\nAlphabet is ready")
+}
+
+fun alphabe4() = StringBuilder().run {
+    for (letter in 'A'..'Z') {
+        append(letter)
+    }
+    append("\nAlphabet is ready")
+}
+
+//fun main() {
+//    val people = listOf(Person("Alice", 29), Person("Bob", 31), Person("Peter", 31))
+//    val allLess30 = people.all { it.age < 30 }
+//    println(allLess30)
+//    val anyLess30 = people.any { it.age < 30 }
+//    println(people.count { it.age < 30 })
+//    println(people.find { it.age < 30 })
+//    println(people.groupBy { it.age < 30 })
+//
+//    val books = listOf(
+//        Book("Thursday Next", listOf("Jasper Fforde")),
+//        Book("Mort", listOf("Terry Pratchett")),
+//        Book("Good Omens", listOf("Terry Pratchett", "Neil Gaiman"))
+//    )
+//    println(books.flatMap { it.authors }.toSet())
+//}
+
+// функции высшего порядка
+enum class OS { WINDOWS, LINUX, MAC, IOS, ANDROID }
+data class SiteVisit(val path: String, val duration: Double, val os: OS)
+val log = listOf(
+    SiteVisit("/", 34.0, OS.WINDOWS),
+    SiteVisit("/", 22.0, OS.MAC),
+    SiteVisit("/login", 12.0, OS.WINDOWS),
+    SiteVisit("/signup", 8.0, OS.IOS),
+    SiteVisit("/", 16.3, OS.ANDROID)
+)
+
+fun List<SiteVisit>.averageDurationFor(predicate: (SiteVisit) -> Boolean) = filter(predicate).map(SiteVisit::duration).average()
+//fun main() {
+//    val average = log.filter { it.os == OS.WINDOWS }.run { sumOf { it.duration }/size }
+//    println(average)
+//    val averageWindowsDuration = log.filter { it.os == OS.WINDOWS }.map(SiteVisit::duration).average()
+//    println(averageWindowsDuration)
+//    println(log.averageDurationFor{ it.os == OS.WINDOWS && it.path == "/" })
+//    println(log.averageDurationFor{ it.os == OS.MAC })
+//}
+
+class User(
+    val age: Int,
+    val name: String
+)
+
+fun spamLambdas(users: List<User>) = users
+    .filter { it.age > 18 }
+    .groupBy { it.name }
+    .mapValues { it.value.size }
+    .entries
+    .sortedBy { it.value }
+
+// Sequence
+
+fun main() {
+    val people = listOf(Person("Alice", 29), Person("Bob", 31), Person("Peter", 31))
+//    println(people.map(Person::name).filter { it.startsWith("A") })
+//    println(people.asSequence().map(Person::name).filter { it.startsWith("A") }.toList())
+    listOf(1, 2, 3, 4).asSequence().map { println("map($it) "); it * it }.filter { println("filter($it) "); it % 2 == 0 }.toList()
+    println()
+    println()
+    listOf(1, 2, 3, 4).map { println("map($it) "); it * it }.filter { println("filter($it) "); it % 2 == 0 }.toList()
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
