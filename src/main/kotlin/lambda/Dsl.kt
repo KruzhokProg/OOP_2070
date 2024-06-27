@@ -36,8 +36,38 @@ fun createRootWith2ChildrenDsl(): Node<String> {
     return node
 }
 
+fun createRandomTreeWith2LevelsNew(): Node<String> = node {
+    data = "All Companies"
+    repeat(random.nextInt(8)) {
+        node {
+            data = faker.company().name()
+            repeat(random.nextInt(8)) {
+                node {
+                    data = faker.company().name()
+                }
+            }
+        }
+    }
+}
+
+fun createRandomCompaniesTreeNew(): Node<String> = node {
+    data = "Root"
+    randomRecursiveNodes(levels = 4)
+}
+
+private fun Node<String>.randomRecursiveNodes(levels: Int) {
+    if (levels == 0) return
+    repeat(random.nextInt(8)) {
+        node {
+            data = faker.company().name()
+            randomRecursiveNodes(levels - 1)
+        }
+    }
+}
+
 fun main() {
 
-    println(createRootWith2ChildrenDsl())
+//    println(createRootWith2ChildrenDsl())
+    println(createRandomCompaniesTreeNew())
 }
 // DSL - createRandomTreeWithRandomLevels
