@@ -77,34 +77,34 @@ class BackgroundThread : Thread() {
 //    executor.shutdown()
 //}
 
-fun main() {
-    val executor: ExecutorService = Executors.newFixedThreadPool(4)
-    val uiHandler = Handler(Looper.getMainLooper())
-    val futures: MutableList<Future<*>> = mutableListOf()
-
-    val getUser: Future<User> = executor.submit{ api.getUser() }
-    val getFeed: Future<Feed> = executor.submit{ api.getFeed() }
-
-    val task = executor.submit {
-        try {
-            val feed = getFeed.get()
-            val user = getUser.get()
-            uiHandler.post {
-                view.showUserWithFeed(user, feed)
-            }
-        } catch (e: InterruptedException) {
-            uiHandler.post {
-                view.showError()
-            }
-        }
-    }
-
-    futures.add(getUser)
-    futures.add(getFeed)
-    futures.add(task)
-
-//    onDestroy
-    futures.forEach { future ->
-        future.cancel(true)
-    }
-}
+//fun main() {
+//    val executor: ExecutorService = Executors.newFixedThreadPool(4)
+//    val uiHandler = Handler(Looper.getMainLooper())
+//    val futures: MutableList<Future<*>> = mutableListOf()
+//
+//    val getUser: Future<User> = executor.submit{ api.getUser() }
+//    val getFeed: Future<Feed> = executor.submit{ api.getFeed() }
+//
+//    val task = executor.submit {
+//        try {
+//            val feed = getFeed.get()
+//            val user = getUser.get()
+//            uiHandler.post {
+//                view.showUserWithFeed(user, feed)
+//            }
+//        } catch (e: InterruptedException) {
+//            uiHandler.post {
+//                view.showError()
+//            }
+//        }
+//    }
+//
+//    futures.add(getUser)
+//    futures.add(getFeed)
+//    futures.add(task)
+//
+////    onDestroy
+//    futures.forEach { future ->
+//        future.cancel(true)
+//    }
+//}
