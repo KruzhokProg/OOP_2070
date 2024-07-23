@@ -51,32 +51,32 @@ suspend fun order(item: Product): Product {
 //    println(time)
 //}
 
-fun main() {
-    val time = measureTimeMillis {
-        runBlocking {
-            val bricksJob = launch(Dispatchers.Default) {
-                perform("laying bricks")
-            }
-            launch(Dispatchers.IO) {
-                val windows = order(Product.WINDOWS)
-                bricksJob.join()
-                withContext(Dispatchers.Default) {
-                    perform("install ${windows.description}")
-                }
-            }
-            launch(Dispatchers.IO) {
-                val doors = order(Product.DOORS)
-                bricksJob.join()
-//                cancel()
-//                throw Exception("Out of money!")
-                withContext(Dispatchers.Default) {
-                    perform("install ${doors.description}")
-                }
-            }
-        }
-    }
-    println(time)
-}
+//fun main() {
+//    val time = measureTimeMillis {
+//        runBlocking {
+//            val bricksJob = launch(Dispatchers.Default) {
+//                perform("laying bricks")
+//            }
+//            launch(Dispatchers.IO) {
+//                val windows = order(Product.WINDOWS)
+//                bricksJob.join()
+//                withContext(Dispatchers.Default) {
+//                    perform("install ${windows.description}")
+//                }
+//            }
+//            launch(Dispatchers.IO) {
+//                val doors = order(Product.DOORS)
+//                bricksJob.join()
+////                cancel()
+////                throw Exception("Out of money!")
+//                withContext(Dispatchers.Default) {
+//                    perform("install ${doors.description}")
+//                }
+//            }
+//        }
+//    }
+//    println(time)
+//}
 
 //ДЗ
 //вычисление n-го числа фибоначчи параллельно
