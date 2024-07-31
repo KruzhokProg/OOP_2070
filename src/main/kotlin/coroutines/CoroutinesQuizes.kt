@@ -162,29 +162,29 @@ class Aircraft : Moveable {
 //    }
 //}
 
-fun main(): Unit = runBlocking {
-    val handler = CoroutineExceptionHandler { _, exception ->
-        println("caught by handler: $exception")
-    }
-
-//    val scope = CoroutineScope(SupervisorJob() + handler)
-    try {
-        withTimeout(500) {
-            val resList = (0..1000).map {
-                async {
-                    delay(1000 * Random.nextLong(1, 4))
-//                    if (it % 2 == 1) throw CancellationException("hgdfdsf")
-                    it*it
-                }
-            }
-            resList.awaitAll().forEachIndexed { index, i ->
-                println("$index $i")
-            }
-        }
-
-    } catch (e: CancellationException) {
-        println("Error ${e.message}")
-    }
+//fun main(): Unit = runBlocking {
+//    val handler = CoroutineExceptionHandler { _, exception ->
+//        println("caught by handler: $exception")
+//    }
+//
+////    val scope = CoroutineScope(SupervisorJob() + handler)
+//    try {
+//        withTimeout(500) {
+//            val resList = (0..1000).map {
+//                async {
+//                    delay(1000 * Random.nextLong(1, 4))
+////                    if (it % 2 == 1) throw CancellationException("hgdfdsf")
+//                    it*it
+//                }
+//            }
+//            resList.awaitAll().forEachIndexed { index, i ->
+//                println("$index $i")
+//            }
+//        }
+//
+//    } catch (e: CancellationException) {
+//        println("Error ${e.message}")
+//    }
 //
 //    scope.launch {
 //        delay(100)
@@ -195,4 +195,4 @@ fun main(): Unit = runBlocking {
 //        println("Result")
 //    }
 //    delay(300)
-}
+//}
